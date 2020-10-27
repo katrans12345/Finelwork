@@ -1,0 +1,57 @@
+---
+- name: Install env
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+- name: Instal build env
+  host: build
+  become: yes
+
+  tasks:
+    - name: Install Maven
+      apt:
+        name: maven
+        state: present
+
+    - name: Create Directory /home/Project
+        file:
+          path: /home/Project
+          state: directory
+
+    - name: Git Clone
+        git:
+          repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+          dest: /home/Project
+          clone: yes
+
+- name: Install Prod
+  host: Tomcat
+  become: yes
+
+  tasks:
+    - name: Install Tomcat8
+      apt:
+        name: tomcat8
+        state: present
+
+    - name: Install openjdk
+      apt:
+        name: default-jdk
+        state: present
+
+    - name: Ensure tomcat service started
+        service:
+          name: tomcat8
+          state: started
