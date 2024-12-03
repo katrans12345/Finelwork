@@ -34,10 +34,13 @@ jobs:
       - name: Run connect with ssh
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_PRIVATE_KEY" > ../private.key
-          sudo chmod 600 ../private.key
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          sudo chmod 600  ~/.ssh/id_rsa
           echo 51.250.26.119 > ~/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH sluser@51.250.26.119 ls -la
+          ssh -o StrictHostKeyChecking=no sluser@51.250.26.119 ls -la
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.PRIVATE_KEY}}
           
       - name: Install and configure docker
         run: |
@@ -46,7 +49,5 @@ jobs:
           docker-compose version
           docker-compose -H ssh://sluser@51.250.26.119 ls
         shell: bash
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.PRIVATE_KEY}}
-          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+
       
