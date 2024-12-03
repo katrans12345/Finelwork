@@ -30,7 +30,7 @@ jobs:
           ls -la
           echo "${{ github.event.inputs.environment }}"
           echo "This is ${{ vars.TESTENV }}"
-
+          
       - name: Run connect with ssh
         run: |
           mkdir -p ~/.ssh/
@@ -44,6 +44,7 @@ jobs:
           
       - name: Install and configure docker
         run: |
+          docker images 
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose version
