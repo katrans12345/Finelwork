@@ -38,6 +38,8 @@ jobs:
           sudo chmod 600 ../private.key
           echo 51.250.26.119 > ~/.ssh/known_hosts
           ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH sluser@51.250.26.119 ls -la
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
           docker-compose version
           #docker-compose -H ssh://sluser@51.250.26.119 ls
         shell: bash
