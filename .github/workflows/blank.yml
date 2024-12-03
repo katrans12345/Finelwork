@@ -23,7 +23,7 @@ jobs:
           echo Hello, world "${{ github.event.inputs.name }}"!
           ls -la
           echo "${{ github.event.inputs.environment }}"
-          echo "This is $TESTENV"
+          echo "This is ${env.TESTENV}"
 
       - name: Run a multi-line script
         run: |
