@@ -25,7 +25,14 @@ jobs:
           echo "${{ github.event.inputs.environment }}"
           echo "This is ${{ vars.TESTENV }}"
 
-      - name: Run a multi-line script
+      - name: Run connect with ssh
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ../private.key
+          sudo chmod 600 ../private.key
+          echo "51.250.26.119" > ~/.ssh/known_hosts
+          ssh -i $SSH_KEY_PATH sluser@51.250.26.119 ls -la
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.PRIVATE_KEY}}
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
